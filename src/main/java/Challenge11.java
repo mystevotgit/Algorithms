@@ -2,6 +2,7 @@ import java.util.Date;
 
 public class Challenge11 {
     public static class User {
+
         private String name;
         private boolean status;
         private Date logtime;
