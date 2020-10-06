@@ -1,4 +1,4 @@
-class Challenge {
+class Challenge13 {
     public static long triangular( Integer n ) {
         System.out.println(n);
         long sum = 0;
