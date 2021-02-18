@@ -17,7 +17,8 @@ class PhonebookChallenge {
         // Edit an entry in the phonebook.
         phonebook.put("Olatunji", "+2348111122233");
 
-
+        // View a single contact.
+        phonebook.get("Olatunji");
 
         // View all the entries in the phonebook.
         Set<String> keys = phonebook.keySet();
