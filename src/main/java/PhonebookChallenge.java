@@ -14,6 +14,11 @@ class PhonebookChallenge {
         // Remove a contact from the phonebook.
         phonebook.remove("Olatunji");
 
+        // Edit an entry in the phonebook.
+        phonebook.put("Olatunji", "+2348111122233");
+
+
+
         // View all the entries in the phonebook.
         Set<String> keys = phonebook.keySet();
         keys.forEach(key -> System.out.println("Name: " + key + " --->> Phone Number: " + phonebook.get(key)));
