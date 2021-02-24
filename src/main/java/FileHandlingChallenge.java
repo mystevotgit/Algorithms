@@ -44,8 +44,8 @@ public class FileHandlingChallenge {
 //        cleanUpFiles();
     }
 
-    public static void cleanUpFiles() {
-        File targetFile = new File(FILE_NAME);
-        targetFile.delete();
-    }
+//    public static void cleanUpFiles() {
+//        File targetFile = new File(FILE_NAME);
+//        targetFile.delete();
+//    }
 }
