@@ -1,4 +1,4 @@
-package netflixchallenge;
+package netflixchallenge.grouptitles;
 
 import java.util.*;
 class Solution {
