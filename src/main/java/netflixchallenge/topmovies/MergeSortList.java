@@ -1,5 +1,8 @@
 package netflixchallenge.topmovies;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class MergeSortList{
     public static LinkedListNode merge2Country(LinkedListNode l1, LinkedListNode l2) {
         LinkedListNode dummy = new LinkedListNode(-1);
