@@ -1,6 +1,8 @@
 package netflixchallenge.grouptitles;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 class Solution {
     public static List<List<String>> groupTitles(String[] strs){
         if (strs.length == 0)
@@ -28,8 +30,25 @@ class Solution {
 
             res.get(key).add(s);
         }
+        List<List<String>> result = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            result.add(new ArrayList<>());
+        }
+        for (int j = 0; j < 3; j++) {
+            List<List<String>> list =  res.values().stream().collect(Collectors.toList());
+            if (list.get(j).size() == 3) {
+                result.set(0, list.get(j));
+            }
+            if (list.get(j).size() == 2) {
+                result.set(2, list.get(j));
+            }
+            if (list.get(j).size() == 1) {
+                result.set(1, list.get(j));
+            }
+        }
+        System.out.println(result);
 
-        return new ArrayList<List<String>>(res.values());
+        return result;
     }
 
     public static void main(String[] args) {
