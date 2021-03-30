@@ -7,6 +7,7 @@ class Solution {
     private static int[][] sides = {
             {0,-1},{-1,0},{0,1},{1,0}
     };
+    private static int numCircles = 0;     //Number of islands
 
     public static int numIslands(String[][] islands) {
         // write your code here
@@ -17,17 +18,17 @@ class Solution {
 
         Stack<int[]> stack = new Stack<>();
 
-        int numCircles = 0;     //Number of islands
-
         boolean visited[][] = new boolean[n][islands[0].length];
-        Arrays.fill(visited, false);
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(visited[i], false);
+        }
 
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < visited[i].length; ++j) {
-                if (!visited[i][j]) {
-                    visited[i][j] = true;
-                    DFS(islands, visited, stack, i, j); //Recursive step to find all islands
-                    numCircles = numCircles + 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < visited[i].length; j++) {
+                if (islands[i][j].equals("1") && !visited[i][j]) {
+                    int[] pos = {i, j};
+                    stack.add(pos);
+                    numCircles += DFS(islands, visited, stack); //Recursive step to find all islands
                 }
             }
         }
@@ -35,22 +36,24 @@ class Solution {
         return numCircles;
     }
 
-    public static void DFS (String[][] islands, boolean[][] visited, Stack<int[]> stack, int i, int j) {
-        int[][] adjacentPositions = getAdjacentPositions(i, j);
-        for (int x = adjacentPositions.length - 1; x >= 0; --x) {
+    public static int DFS (String[][] islands, boolean[][] visited, Stack<int[]> stack) {
+        if (stack.empty()) {
+            return 1;
+        }
+        int[] current = stack.pop();
+        System.out.println(current[0] + "     " +  current[1]);
+        visited[current[0]][current[1]] = true;
+        int[][] adjacentPositions = getAdjacentPositions(current[0], current[1]);
+        for (int x = adjacentPositions.length - 1; x >= 0; x--) {
             int[] position = adjacentPositions[x];
-            if (position[0] >= 0 && position[1] >= 0) {
-                stack.add(position);
+            if (position[0] >= 0 && position[1] >= 0 && position[0] < visited.length && position[1] < visited[0].length) {
+                if (islands[position[0]][position[1]].equals("1") && !visited[position[0]][position[1]]) {
+                    stack.add(position);
+                    System.out.println(position[0] + "  " + position[1]);
+                }
             }
         }
-        if (stack.empty()) {
-            return;
-        }
-        int[] current = stack.peek();
-        if (islands[current[0]][current[1]].equals("1") && !visited[current[0]][current[1]] && i != current[0] && j != current[1]) {
-            visited[current[0]][current[1]] = true;
-            DFS(islands, visited, stack, current[0], current[1]);
-        }
+        return DFS(islands, visited, stack);
     }
 
     private static int[][] getAdjacentPositions(int i, int j) {
