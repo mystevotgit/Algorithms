@@ -1,57 +1,107 @@
 package searchengine.autocomplete;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
-class Node {
+class Node implements Comparable<Node>{
     public HashMap<Character, Node> children;
-    public boolean isWord;
+    public boolean isEnd;
+    public String data;
+    int rank;
+    public List<Node> hot;
 
     public Node(){
         this.children = new HashMap<Character, Node>();
-        this.isWord = false;
+        this.isEnd = false;
+        this.rank = 0;
+        hot = new ArrayList<>();
+    }
+
+    public int compareTo(Node n){
+        if(this.rank == n.rank)
+            return this.data.compareTo(n.data);
+        return n.rank - this.rank;
+    }
+
+    public void update(Node n){
+        if(!this.hot.contains(n)){
+            this.hot.add(n);
+        }
+        Collections.sort(hot);
+        if (hot.size() > 3) {
+            hot.remove(hot.size() - 1);
+        }
     }
 }
 
-class WordDictionary {
+class AutocompleteSystem{
+
     private Node root;
-    public WordDictionary(){
+    private Node current;
+    private String keyword;
+
+
+    public AutocompleteSystem(String[] sentences, int[] times){
         this.root = new Node();
+        this.current = root;
+        this.keyword = "";
+
+        for (int i = 0; i < sentences.length; i++){
+            this.addRecord(sentences[i], times[i]);
+        }
     }
 
-    public void insertWord(String word){
+    public void addRecord(String sentence, int t){
         Node node = this.root;
-        for (Character c:  word.toCharArray()){
+        List<Node> visited = new ArrayList<>();
+        for (Character c:  sentence.toCharArray()){
             if (!node.children.containsKey(c))
                 node.children.put(c, new Node());
             node = node.children.get(c);
+            visited.add(node);
         }
-        node.isWord = true;
+        node.isEnd = true;
+        node.data = sentence;
+        node.rank += t;
+
+        for (Node i: visited){
+            i.update(node);
+        }
     }
 
-    public boolean searchWord(String word){
-        Node node = this.root;
-        for (Character c:  word.toCharArray()){
-            if (!node.children.containsKey(c))
-                return false;
-            node = node.children.get(c);
+    public String[] autoComplete(char c){
+        List<String> res = new ArrayList<>();
+        if (c == '#') {
+            addRecord(keyword, 1);
+            keyword = "";
+            current = root;
+            return new String[]{};
         }
-        return node.isWord;
+
+        this.keyword += c;
+        if (current != null) {
+            if (!current.children.containsKey(c))
+                return new String[]{};
+            else
+                current = current.children.get(c);
+        }
+        else
+            return new String[]{};
+
+        for (Node node : current.hot) {
+            res.add(node.data);
+        }
+        return res.toArray(new String[res.size()]);
     }
 }
 class Solution {
     public static void main( String args[] ) {
-        System.out.println( "Hello World!" );
-        String[] keys = {"the", "a", "there", "answer", "any",
-                "by", "bye", "their", "abc"};
-        System.out.println("Keys to insert: ");
-        System.out.println(Arrays.toString(keys));
-
-        WordDictionary d = new WordDictionary();
-
-        for(int i=0; i < keys.length; i++)
-            d.insertWord(keys[i]);
-
-        System.out.println("Searching 'there' in the dictionary results: " + d.searchWord("there"));
+        String[] sentences = {"beautiful", "best quotes", "best friend", "best birthday wishes", "instagram", "internet"};
+        int[] times = {30, 14, 21, 10, 10, 15};
+        AutocompleteSystem auto = new AutocompleteSystem(sentences, times);
+        System.out.println(Arrays.toString(auto.autoComplete('b')));
+        System.out.println(Arrays.toString(auto.autoComplete('e')));
+        System.out.println(Arrays.toString(auto.autoComplete('s')));
+        System.out.println(Arrays.toString(auto.autoComplete('t')));
+        System.out.println(Arrays.toString(auto.autoComplete('#')));
     }
 }
