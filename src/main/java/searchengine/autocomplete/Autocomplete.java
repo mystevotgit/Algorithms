@@ -95,6 +95,7 @@ class AutocompleteSystem{
 }
 class Solution {
     public static void main( String args[] ) {
+//        String string = "string";
         String[] sentences = {"beautiful", "best quotes", "best friend", "best birthday wishes", "instagram", "internet"};
         int[] times = {30, 14, 21, 10, 10, 15};
         AutocompleteSystem auto = new AutocompleteSystem(sentences, times);
