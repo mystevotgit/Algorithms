@@ -13,21 +13,21 @@ public class Accumul {
 
         // Process each character according to their index
         for (int i = 0; i < list.size(); i++) {
-            String accumulate = "";
+            StringBuilder accumulate = new StringBuilder();
             if (i == 0) {
                 resultList.add(list.get(i).toUpperCase());
-            }else{
-                accumulate += list.get(i).toUpperCase();
+            } else {
+                accumulate.append(list.get(i).toUpperCase());
                 for (int j = 1; j < i + 1; j++) {
-                    accumulate += list.get(i).toLowerCase();
+                    accumulate.append(list.get(i).toLowerCase());
                 }
-                resultList.add(accumulate);
+                resultList.add(accumulate.toString());
             }
         }
         // Join and return the content of the resultList
-        return "".join("-", resultList);
+        return String.join("-", resultList);
     }
-    
+
     public static void main(String[] args) {
         System.out.println(accum("ZpglnRxqenU"));
         System.out.println(accum("UnzlhNcraxD"));
