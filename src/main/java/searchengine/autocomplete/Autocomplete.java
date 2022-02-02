@@ -2,28 +2,28 @@ package searchengine.autocomplete;
 
 import java.util.*;
 
-class Node implements Comparable<Node>{
+class Node implements Comparable<Node> {
     public HashMap<Character, Node> children;
     public boolean isEnd;
     public String data;
     int rank;
     public List<Node> hot;
 
-    public Node(){
+    public Node() {
         this.children = new HashMap<Character, Node>();
         this.isEnd = false;
         this.rank = 0;
         hot = new ArrayList<>();
     }
 
-    public int compareTo(Node n){
-        if(this.rank == n.rank)
+    public int compareTo(Node n) {
+        if (this.rank == n.rank)
             return this.data.compareTo(n.data);
         return n.rank - this.rank;
     }
 
-    public void update(Node n){
-        if(!this.hot.contains(n)){
+    public void update(Node n) {
+        if (!this.hot.contains(n)) {
             this.hot.add(n);
         }
         Collections.sort(hot);
@@ -33,27 +33,27 @@ class Node implements Comparable<Node>{
     }
 }
 
-class AutocompleteSystem{
+class AutocompleteSystem {
 
     private Node root;
     private Node current;
     private String keyword;
 
 
-    public AutocompleteSystem(String[] sentences, int[] times){
+    public AutocompleteSystem(String[] sentences, int[] times) {
         this.root = new Node();
         this.current = root;
         this.keyword = "";
 
-        for (int i = 0; i < sentences.length; i++){
+        for (int i = 0; i < sentences.length; i++) {
             this.addRecord(sentences[i], times[i]);
         }
     }
 
-    public void addRecord(String sentence, int t){
+    public void addRecord(String sentence, int t) {
         Node node = this.root;
         List<Node> visited = new ArrayList<>();
-        for (Character c:  sentence.toCharArray()){
+        for (Character c : sentence.toCharArray()) {
             if (!node.children.containsKey(c))
                 node.children.put(c, new Node());
             node = node.children.get(c);
@@ -63,12 +63,12 @@ class AutocompleteSystem{
         node.data = sentence;
         node.rank += t;
 
-        for (Node i: visited){
+        for (Node i : visited) {
             i.update(node);
         }
     }
 
-    public String[] autoComplete(char c){
+    public String[] autoComplete(char c) {
         List<String> res = new ArrayList<>();
         if (c == '#') {
             addRecord(keyword, 1);
@@ -83,8 +83,7 @@ class AutocompleteSystem{
                 return new String[]{};
             else
                 current = current.children.get(c);
-        }
-        else
+        } else
             return new String[]{};
 
         for (Node node : current.hot) {
@@ -93,8 +92,9 @@ class AutocompleteSystem{
         return res.toArray(new String[res.size()]);
     }
 }
+
 class Solution {
-    public static void main( String args[] ) {
+    public static void main(String args[]) {
 //        String string = "string";
         String[] sentences = {"beautiful", "best quotes", "best friend", "best birthday wishes", "instagram", "internet"};
         int[] times = {30, 14, 21, 10, 10, 15};
