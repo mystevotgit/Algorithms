@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 
 class Challenge1 {
-    public static Integer lookSay( Integer number ) {
+    public static Integer lookSay(Integer number) {
         if (number < 10) {
             return 10 + number;
         }
@@ -14,7 +14,7 @@ class Challenge1 {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals(current)) {
                 count++;
-            }else{
+            } else {
                 result += count;
                 count = 0;
                 result += current;
@@ -23,10 +23,11 @@ class Challenge1 {
             }
         }
         result += count;
-        result += list.get(list.size()-1);
+        result += list.get(list.size() - 1);
         int finalResult = Integer.parseInt(result);
         return finalResult;
     }
+
     public static void main(String[] args) {
         System.out.println(lookSay(12));
         System.out.println(lookSay(0));
