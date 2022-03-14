@@ -1,7 +1,9 @@
 package AndChallenge;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Challenge {
     public static int countHighlyProfitableMonths(List<Integer> stockPrices, int k) {
@@ -28,10 +30,49 @@ public class Challenge {
 //        System.out.println(moves(Arrays.asList(5, 8, 5, 11, 4, 6)));
 //        System.out.println(minimizedCost(Arrays.asList(1, 1), Arrays.asList(1, 3), Arrays.asList(1, 1)));
 //        System.out.println(getSubsequenceCount("ABC", "ABCBABC"));
-        System.out.println(pointsBelong(3, 1, 7, 1, 5, 5, 1, 1, 4, 3));
-        System.out.println(pointsBelong(3, 1, 7, 1, 5, 5, 3, 1, 0, 3));
+//        System.out.println(pointsBelong(3, 1, 7, 1, 5, 5, 1, 1, 4, 3));
+//        System.out.println(pointsBelong(3, 1, 7, 1, 5, 5, 3, 1, 0, 3));
+        System.out.println(solution("ONLABLABLOON")); // BALLOON
 
     }
+
+//    class Solution {
+    static int solution(String S) {
+        // write your code in Java SE 8
+        Map<String, Double> map = new HashMap<>();
+        map.put("B", 0.0);
+        map.put("A", 0.0);
+        map.put("L", 0.0);
+        map.put("O", 0.0);
+        map.put("N", 0.0);
+        for (int i = 0; i < S.length(); i++) {
+            switch(S.charAt(i)) {
+                case 'B':
+                    map.put("B", map.get("B") + 1);
+                    break;
+                case 'A':
+                    map.put("A", map.get("A") + 1);
+                    break;
+                case 'L':
+                    map.put("L", map.get("L") + 0.5);
+                    break;
+                case 'O':
+                    map.put("O", map.get("O") + 0.5);
+                    break;
+                case 'N':
+                    map.put("N", map.get("N") + 1);
+                    break;
+            }
+        }
+        System.out.println(map);
+        System.out.println(map.values());
+        final double[] min = {10000000000.0};
+        map.values().forEach(val -> {
+            min[0] = Math.min(val, min[0]);
+        });
+        return (int) min[0];
+    }
+//    }
 
     public static int pointsBelong(int x1, int y1, int x2, int y2, int x3, int y3, int xp, int yp, int xq, int yq) {
 
